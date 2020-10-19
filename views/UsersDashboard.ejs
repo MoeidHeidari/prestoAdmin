@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Prestomarket admin panel</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="../../plugins/fontawesome-free/css/all.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- DataTables -->
+    <link rel="stylesheet" href="../../plugins/datatables-bs4/css/dataTables.bootstrap4.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="../../dist/css/adminlte.min.css">
+
+
+    <!-- Google Font: Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+</head>
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+
+    <!-- Navbar -->
+    <% include navbar.ejs %>
+    <!-- /.navbar -->
+
+    <!-- Main Sidebar Container -->
+    <% include rightbar_container.ejs %>
+    <!-- /.Main Sidebar Container -->
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1>Users</h1>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item active">Users</li>
+                        </ol>
+                    </div>
+                </div>
+            </div><!-- /.container-fluid -->
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+            <!-- Customers -->
+            <div class="row">
+                <div class="col-12">
+
+                    <!-- /.card -->
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Customers</h3>
+                        </div>
+
+                        <!-- /.card-header -->
+                        <div class="card-body">
+
+                            <table id="CustomersDataTable" class="table table-bordered table-striped">
+                                <thead>
+
+                                <tr>
+
+                                    <th>#</th>
+                                    <th>Pro image</th>
+                                    <th>First name</th>
+                                    <th>Last name</th>
+                                    <th>Email</th>
+                                    <th>PhoneNumber</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                <% Users.forEach(function(user, i) { %>
+
+                                    <tr>
+                                        <td><%= ++i %></td>
+                                        <td>
+                                            <div class="text-center user-block">
+                                                <img class="img-circle img-bordered-sm" src="<%= user.proImage %>"
+                                                     alt="User Image">
+
+                                            </div>
+
+
+                                        </td>
+                                        <td><%= user.firstName %></td>
+                                        <td><%= user.lastName %></td>
+                                        <td><%= user.email %></td>
+                                        <td><%= user.phoneNumber %></td>
+                                        <td>
+
+                                            <% if (user.isActivated) { %>
+
+                                                <div class="progress progress-xs progress-striped active">
+                                                    <div class="progress-bar bg-success" style="width: 100%"></div>
+                                                </div>
+                                                <p>activated</p>
+                                            <%
+                                            }else{
+                                            %>
+                                                <div class="progress progress-xs">
+                                                    <div class="progress-bar bg-warning"
+                                                         style="width: 50%"></div>
+
+                                                </div>
+                                                <p>pending</p>
+                                            <% } %>
+                                        </td>
+                                        <td>
+                                            <div class="input-group-prepend">
+                                                <button type="button" class="btn btn-info dropdown-toggle"
+                                                        data-toggle="dropdown" aria-expanded="false">
+                                                    Action
+                                                </button>
+                                                <div class="dropdown-menu" x-placement="bottom-start"
+                                                     style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                                                    <a type="button" class="dropdown-item" onclick="editAction('<%= user._id %>')">Edit</a>
+                                                    <a type="button" class="dropdown-item" onclick="removeAction('<%= user._id %>')">Remove</a>
+                                                    <a type="button" class="dropdown-item" onclick="activeUserAction('<%= user._id %>',<%= true %>)">activate</a>
+                                                    <a type="button" class="dropdown-item" onclick="activeUserAction('<%= user._id %>',<%= false %>)">deactivate</a>
+                                                    <div class="dropdown-divider" ></div>
+                                                    <a type="button" class="dropdown-item">contact</a>
+                                                </div>
+                                            </div>
+
+                                        </td>
+
+                                    </tr>
+                                <% }); %>
+
+                                <tfoot>
+                                </tbody>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Pro image</th>
+                                    <th>First name</th>
+                                    <th>Last name</th>
+                                    <th>Email</th>
+                                    <th>PhoneNumber</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- center user remove Modal -->
+            <div class="modal fade" id="userRemoveModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">remove user</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p id="userRemoveModalCaution"></p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" >Close</button>
+                            <button type="button" class="btn btn-danger" id="removeUserModalConfirmButton">remove</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- center active user Modal -->
+            <div class="modal fade" id="userActiveModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">remove user</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p id="activeUserModalCaution"></p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" >Close</button>
+                            <button type="button" class="btn btn-danger" id="activeUserModalConfirmButton">remove</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal -->
+            <div class="modal fade" id="mainUserModal" tabindex="-1" role="dialog"
+                 aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="card card-default">
+                            <div class="card-header">
+                                <h3 class="card-title">Edit user</h3>
+                            </div>
+                            <!-- /.card-header -->
+                            <!-- form start -->
+                            <form role="userUpdateInfoForm">
+
+                                <div id="userMainModalHeader" class="card-body card-outline">
+                                    <div class="text-center">
+                                        <img class="profile-user-img img-fluid img-circle" id="ModalMainUserImage"
+                                             src="/images/moeidProImage.jpg" alt="User profile picture">
+                                    </div>
+                                    <h3 class="profile-username text-center" id="ModalMainUserFullName">loading...</h3>
+                                    <p class="text-muted text-center" id="ModalMainUserEmail">loading...</p>
+                                    <div class="text-center">
+                                        <span class="badge " id="UserSateteSpan">pending</span>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="MainModalFirstNameInput">First name</label>
+                                        <input type="text" class="form-control" id="MainModalFirstNameInput"
+                                               placeholder="First name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="MainModalLastNameInput">LastName</label>
+                                        <input type="text" class="form-control" id="MainModalLastNameInput"
+                                               placeholder="Last name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="MainModalEmailInput">Email</label>
+                                        <input type="email" class="form-control" id="MainModalEmailInput"
+                                               placeholder="Email">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="MainModalPhoneNumberInput">Phone number</label>
+                                        <input type="phoneNumber" class="form-control" id="MainModalPhoneNumberInput"
+                                               placeholder="Phone Number">
+                                    </div>
+                                    <div class="input-group-prepend">
+
+
+                                        <select class="form-control select2 select2-hidden-accessible"
+                                                style="width: 100%;" id="MainModalRoleSelection" tabindex="-1"
+                                                aria-hidden="true">
+
+                                            <option value="2">Customer</option>
+                                            <option value="1">Admin</option>
+                                            <option value="3">Store holder</option>
+
+                                        </select>
+
+
+                                    </div>
+
+
+                                </div>
+                                <!-- /.card-body -->
+
+                                <div class="card-footer">
+                                    <button type="submit" class="btn btn-success" id="MainModalSubmitButton">save changes</button>
+                                    <button type="close" class="btn btn-danger" data-dismiss="modal">cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Admins -->
+            <div class="row">
+                <div class="col-12">
+
+                    <!-- /.card -->
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Admins</h3>
+                        </div>
+
+                        <!-- /.card-header -->
+                        <div class="card-body">
+
+                            <table id="AdminsDataTable" class="table table-bordered table-striped">
+                                <thead>
+
+                                <tr>
+
+                                    <th>#</th>
+                                    <th>First name</th>
+                                    <th>Last name</th>
+                                    <th>Email</th>
+                                    <th>PhoneNumber</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+
+
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                <% Admins.forEach(function(user, i) { %>
+
+
+                                    <tr>
+                                        <td><%= ++i %></td>
+                                        <td><%= user.firstName %></td>
+                                        <td><%= user.lastName %></td>
+                                        <td><%= user.email %></td>
+                                        <td><%= user.phoneNumber %></td>
+                                        <td>
+
+                                            <% if (user.isActivated) { %>
+
+                                                <div class="progress progress-xs progress-striped active">
+                                                    <div class="progress-bar bg-success" style="width: 100%"></div>
+                                                </div>
+                                                <p>activated</p>
+                                            <%
+                                            }else{
+                                            %>
+                                                <div class="progress progress-xs">
+                                                    <div class="progress-bar progress-bar-danger"
+                                                         style="width: 50%"></div>
+
+                                                </div>
+                                                <p>pending</p>
+                                            <% } %>
+                                        </td>
+                                        <td>
+                                            <div class="input-group-prepend">
+                                                <button type="button" class="btn btn-info dropdown-toggle"
+                                                        data-toggle="dropdown" aria-expanded="false">
+                                                    Action
+                                                </button>
+                                                <div class="dropdown-menu" x-placement="bottom-start"
+                                                     style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                                                    <a class="dropdown-item" href="#">Edit</a>
+                                                    <a class="dropdown-item" href="#">Remove</a>
+                                                    <a class="dropdown-item" href="#">activate</a>
+                                                    <a class="dropdown-item" href="#">deactivate</a>
+                                                    <div class="dropdown-divider"></div>
+                                                    <a class="dropdown-item" href="#">contact</a>
+                                                </div>
+                                            </div>
+
+                                        </td>
+                                    </tr>
+                                <% }); %>
+
+                                </tbody>
+                                <tfoot>
+                                <tr>
+                                    <th>#</th>
+                                    <th>First name</th>
+                                    <th>Last name</th>
+                                    <th>Email</th>
+                                    <th>PhoneNumber</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+                <!-- /.col -->
+            </div>
+
+            <!-- /.row -->
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+    <footer class="main-footer">
+        <div class="float-right d-none d-sm-block">
+            <b>Version</b> 3.0.2
+        </div>
+        <strong>Copyright &copy; 2014-2019 <a href="http://adminlte.io">AdminLTE.io</a>.</strong> All rights
+        reserved.
+    </footer>
+
+    <!-- Control Sidebar -->
+    <aside class="control-sidebar control-sidebar-dark">
+        <!-- Control sidebar content goes here -->
+    </aside>
+    <!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
+
+<!-- jQuery -->
+<script src="../../plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- DataTables -->
+<script src="../../plugins/datatables/jquery.dataTables.js"></script>
+<script src="../../plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>
+<!-- AdminLTE App -->
+<script src="../../dist/js/adminlte.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="../../dist/js/demo.js"></script>
+<script src="../../plugins/sweetalert2/sweetalert2.min.js"></script>
+<!-- Toastr -->
+
+<script src="/javascripts/AdminUserPanelScript.js"></script>
+<!-- page script -->
+<script>
+    $(function () {
+        // $("#example1").DataTable();
+        $('#CustomersDataTable').DataTable({
+            "paging": true,
+            "lengthChange": true,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": true,
+        });
+        $('#AdminsDataTable').DataTable({
+            "paging": true,
+            "lengthChange": true,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": true,
+        });
+    });
+</script>
+</body>
+</html>

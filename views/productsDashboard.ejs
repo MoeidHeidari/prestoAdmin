@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Prestomarket admin panel</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="../../plugins/fontawesome-free/css/all.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- DataTables -->
+    <link rel="stylesheet" href="../../plugins/datatables-bs4/css/dataTables.bootstrap4.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="../../dist/css/adminlte.min.css">
+
+
+    <!-- Google Font: Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+</head>
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+
+    <!-- Navbar -->
+    <% include navbar.ejs %>
+    <!-- /.navbar -->
+
+    <!-- Main Sidebar Container -->
+    <% include rightbar_container.ejs %>
+    <!-- /.Main Sidebar Container -->
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1>Products</h1>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item active">products</li>
+                        </ol>
+                    </div>
+                </div>
+            </div><!-- /.container-fluid -->
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+            <!-- tab bar -->
+            <div class="card card-primary card-outline">
+                <div class="card-header ">
+                    <h3 class="card-title">
+                        <i class="fas fa-edit"></i>
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <ul class="nav nav-tabs " id="custom-content-below-tab" role="tablist">
+                        <li class="nav-item">
+
+                            <a class="nav-link active" id="custom-content-below-home-tab" data-toggle="pill"
+                               href="#custom-content-below-categories" role="tab"
+                               aria-controls="custom-content-below-home"
+                               aria-selected="true">categories <span class="badge badge-pill" id="categoriesNumberBadge"></span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="custom-content-below-profile-tab" data-toggle="pill"
+                               href="#custom-content-below-firstLevelSubCats" role="tab"
+                               aria-controls="custom-content-below-profile" aria-selected="false">first level
+                                subcategories <span class="badge badge-pill">523</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="custom-content-below-messages-tab" data-toggle="pill"
+                               href="#custom-content-below-secondLevelSubCat" role="tab"
+                               aria-controls="custom-content-below-messages" aria-selected="false">second level
+                                subcategories <span class="badge badge-pill">236</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="custom-content-below-settings-tab" data-toggle="pill"
+                               href="#custom-content-below-Attributes" role="tab"
+                               aria-controls="custom-content-below-settings" aria-selected="false">attributes <span
+                                        class="badge badge-pill">55</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="custom-content-below-settings-tab" data-toggle="pill"
+                               href="#custom-content-below-Products" role="tab"
+                               aria-controls="custom-content-below-settings" aria-selected="false">products <span
+                                        class="badge badge-pill">2308</span></a>
+                        </li>
+
+                    </ul>
+                    <div class="tab-content" id="custom-content-below-tabContent">
+                        <div class="tab-pane fade show active" id="custom-content-below-categories" role="tabpanel"
+                             aria-labelledby="custom-content-below-categories-tab">
+                            <div class="row">
+
+                                <!-- /.col -->
+                                <div class="col-md-12">
+                                    <div class="card ">
+                                        <div class="card-header">
+                                            <h3 class="card-title">Main Categories</h3>
+                                        </div>
+                                        <!-- /.card-header -->
+                                        <div class="card-body">
+                                            <table class="table table-bordered table-striped"
+                                                   id="MainCategoriesDataTable">
+                                                <thead>
+                                                <tr>
+                                                    <th style="width: 10px">#</th>
+                                                    <th>title</th>
+                                                    <th>number of subcategories</th>
+                                                    <th style="width: 40px">date</th>
+                                                    <th style="width: 40px">action</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <!-- /.card-body -->
+                                        <div class="card-footer clearfix">
+
+                                            <div class="pagination pagination-sm m-0 float-left">
+                                                <button class="btn-sm btn-primary" id="addNewCategoryButton" onclick="openAddNewCategoryModal()">add new category</button>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <!-- /.card -->
+                                    <!-- /.card -->
+                                </div>
+                                <!-- /.col -->
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="custom-content-below-firstLevelSubCats" role="tabpanel"
+                             aria-labelledby="custom-content-below-profile-tab">
+                            <div class="row">
+
+                                <!-- /.col -->
+                                <div class="col-md-12">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h3 class="card-title">First level subcategories</h3>
+                                        </div>
+                                        <!-- /.card-header -->
+                                        <div class="card-body">
+                                            <table class="table table-bordered table-striped"
+                                                   id="FirstLevelSubCategoriesDataTable">
+                                                <thead>
+                                                <tr>
+                                                    <th style="width: 10px">#</th>
+                                                    <th>title</th>
+                                                    <th>possible values number</th>
+                                                    <th style="width: 40px">date</th>
+                                                    <th style="width: 40px">action</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr>
+                                                    <td>1.</td>
+                                                    <td>Update software</td>
+                                                    <td>
+                                                        2
+                                                    </td>
+                                                    <td><span class="badge bg-warning">23/01/2020</span></td>
+                                                    <td>
+                                                        <div class="input-group-prepend">
+                                                            <button type="button" class="btn btn-info dropdown-toggle"
+                                                                    data-toggle="dropdown" aria-expanded="false">
+                                                                Action
+                                                            </button>
+                                                            <div class="dropdown-menu" x-placement="bottom-start"
+                                                                 style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                                                                <a type="button" class="dropdown-item">Edit</a>
+                                                                <a type="button" class="dropdown-item">Remove</a>
+                                                                <a type="button" class="dropdown-item">activate</a>
+                                                                <a type="button" class="dropdown-item">deactivate</a>
+                                                                <div class="dropdown-divider"></div>
+                                                                <a type="button" class="dropdown-item">contact</a>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>1.</td>
+                                                    <td>Update software</td>
+                                                    <td>
+                                                        2
+                                                    </td>
+                                                    <td><span class="badge bg-warning">23/01/2020</span></td>
+                                                    <td>
+                                                        <div class="input-group-prepend">
+                                                            <button type="button" class="btn btn-info dropdown-toggle"
+                                                                    data-toggle="dropdown" aria-expanded="false">
+                                                                Action
+                                                            </button>
+                                                            <div class="dropdown-menu" x-placement="bottom-start"
+                                                                 style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                                                                <a type="button" class="dropdown-item">Edit</a>
+                                                                <a type="button" class="dropdown-item">Remove</a>
+                                                                <a type="button" class="dropdown-item">activate</a>
+                                                                <a type="button" class="dropdown-item">deactivate</a>
+                                                                <div class="dropdown-divider"></div>
+                                                                <a type="button" class="dropdown-item">contact</a>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>1.</td>
+                                                    <td>Update software</td>
+                                                    <td>
+                                                        2
+                                                    </td>
+                                                    <td><span class="badge bg-warning">23/01/2020</span></td>
+                                                    <td>
+                                                        <div class="input-group-prepend">
+                                                            <button type="button" class="btn btn-info dropdown-toggle"
+                                                                    data-toggle="dropdown" aria-expanded="false">
+                                                                Action
+                                                            </button>
+                                                            <div class="dropdown-menu" x-placement="bottom-start"
+                                                                 style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                                                                <a type="button" class="dropdown-item">Edit</a>
+                                                                <a type="button" class="dropdown-item">Remove</a>
+                                                                <a type="button" class="dropdown-item">activate</a>
+                                                                <a type="button" class="dropdown-item">deactivate</a>
+                                                                <div class="dropdown-divider"></div>
+                                                                <a type="button" class="dropdown-item">contact</a>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>1.</td>
+                                                    <td>Update software</td>
+                                                    <td>
+                                                        2
+                                                    </td>
+                                                    <td><span class="badge bg-warning">23/01/2020</span></td>
+                                                    <td>
+                                                        <div class="input-group-prepend">
+                                                            <button type="button" class="btn btn-info dropdown-toggle"
+                                                                    data-toggle="dropdown" aria-expanded="false">
+                                                                Action
+                                                            </button>
+                                                            <div class="dropdown-menu" x-placement="bottom-start"
+                                                                 style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                                                                <a type="button" class="dropdown-item">Edit</a>
+                                                                <a type="button" class="dropdown-item">Remove</a>
+                                                                <a type="button" class="dropdown-item">activate</a>
+                                                                <a type="button" class="dropdown-item">deactivate</a>
+                                                                <div class="dropdown-divider"></div>
+                                                                <a type="button" class="dropdown-item">contact</a>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <!-- /.card-body -->
+                                        <div class="card-footer clearfix">
+
+                                            <div class="pagination pagination-sm m-0 float-left">
+                                                <button class="btn-sm btn-primary">add new sub category</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /.card -->
+                                    <!-- /.card -->
+                                </div>
+                                <!-- /.col -->
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="custom-content-below-secondLevelSubCat" role="tabpanel"
+                             aria-labelledby="custom-content-below-messages-tab">
+                            <div class="row">
+
+                                <!-- /.col -->
+                                <div class="col-md-12">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h3 class="card-title">Second level subcategories</h3>
+                                        </div>
+                                        <!-- /.card-header -->
+                                        <div class="card-body">
+                                            <table class="table table-bordered table-striped"
+                                                   id="SeconLevelSubCategoriesDataTable">
+                                                <thead>
+                                                <tr>
+                                                    <th style="width: 10px">#</th>
+                                                    <th>title</th>
+                                                    <th>possible values number</th>
+                                                    <th style="width: 40px">date</th>
+                                                    <th style="width: 40px">action</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr>
+                                                    <td>1.</td>
+                                                    <td>Update software</td>
+                                                    <td>
+                                                        2
+                                                    </td>
+                                                    <td><span class="badge bg-warning">23/01/2020</span></td>
+                                                    <td>
+                                                        <div class="input-group-prepend">
+                                                            <button type="button" class="btn btn-info dropdown-toggle"
+                                                                    data-toggle="dropdown" aria-expanded="false">
+                                                                Action
+                                                            </button>
+                                                            <div class="dropdown-menu" x-placement="bottom-start"
+                                                                 style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                                                                <a type="button" class="dropdown-item">Edit</a>
+                                                                <a type="button" class="dropdown-item">Remove</a>
+                                                                <a type="button" class="dropdown-item">activate</a>
+                                                                <a type="button" class="dropdown-item">deactivate</a>
+                                                                <div class="dropdown-divider"></div>
+                                                                <a type="button" class="dropdown-item">contact</a>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>1.</td>
+                                                    <td>Update software</td>
+                                                    <td>
+                                                        2
+                                                    </td>
+                                                    <td><span class="badge bg-warning">23/01/2020</span></td>
+                                                    <td>
+                                                        <div class="input-group-prepend">
+                                                            <button type="button" class="btn btn-info dropdown-toggle"
+                                                                    data-toggle="dropdown" aria-expanded="false">
+                                                                Action
+                                                            </button>
+                                                            <div class="dropdown-menu" x-placement="bottom-start"
+                                                                 style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                                                                <a type="button" class="dropdown-item">Edit</a>
+                                                                <a type="button" class="dropdown-item">Remove</a>
+                                                                <a type="button" class="dropdown-item">activate</a>
+                                                                <a type="button" class="dropdown-item">deactivate</a>
+                                                                <div class="dropdown-divider"></div>
+                                                                <a type="button" class="dropdown-item">contact</a>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>1.</td>
+                                                    <td>Update software</td>
+                                                    <td>
+                                                        2
+                                                    </td>
+                                                    <td><span class="badge bg-warning">23/01/2020</span></td>
+                                                    <td>
+                                                        <div class="input-group-prepend">
+                                                            <button type="button" class="btn btn-info dropdown-toggle"
+                                                                    data-toggle="dropdown" aria-expanded="false">
+                                                                Action
+                                                            </button>
+                                                            <div class="dropdown-menu" x-placement="bottom-start"
+                                                                 style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                                                                <a type="button" class="dropdown-item">Edit</a>
+                                                                <a type="button" class="dropdown-item">Remove</a>
+                                                                <a type="button" class="dropdown-item">activate</a>
+                                                                <a type="button" class="dropdown-item">deactivate</a>
+                                                                <div class="dropdown-divider"></div>
+                                                                <a type="button" class="dropdown-item">contact</a>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>1.</td>
+                                                    <td>Update software</td>
+                                                    <td>
+                                                        2
+                                                    </td>
+                                                    <td><span class="badge bg-warning">23/01/2020</span></td>
+                                                    <td>
+                                                        <div class="input-group-prepend">
+                                                            <button type="button" class="btn btn-info dropdown-toggle"
+                                                                    data-toggle="dropdown" aria-expanded="false">
+                                                                Action
+                                                            </button>
+                                                            <div class="dropdown-menu" x-placement="bottom-start"
+                                                                 style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                                                                <a type="button" class="dropdown-item">Edit</a>
+                                                                <a type="button" class="dropdown-item">Remove</a>
+                                                                <a type="button" class="dropdown-item">activate</a>
+                                                                <a type="button" class="dropdown-item">deactivate</a>
+                                                                <div class="dropdown-divider"></div>
+                                                                <a type="button" class="dropdown-item">contact</a>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <!-- /.card-body -->
+                                        <div class="card-footer clearfix">
+
+                                            <div class="pagination pagination-sm m-0 float-left">
+                                                <button class="btn-sm btn-primary">add new subcategory</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /.card -->
+                                    <!-- /.card -->
+                                </div>
+                                <!-- /.col -->
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="custom-content-below-Attributes" role="tabpanel"
+                             aria-labelledby="custom-content-below-settings-tab">
+                            <div class="row">
+
+                                <!-- /.col -->
+                                <div class="col-md-12">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h3 class="card-title">attributes</h3>
+                                        </div>
+                                        <!-- /.card-header -->
+                                        <div class="card-body">
+                                            <table class="table table-bordered table-striped" id="AttributesDataTable">
+                                                <thead>
+                                                <tr>
+                                                    <th style="width: 10px">#</th>
+                                                    <th>title</th>
+                                                    <th>possible values number</th>
+                                                    <th style="width: 40px">date</th>
+                                                    <th style="width: 40px">action</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr>
+                                                    <td>1.</td>
+                                                    <td>Update software</td>
+                                                    <td>
+                                                        2
+                                                    </td>
+                                                    <td><span class="badge bg-warning">23/01/2020</span></td>
+                                                    <td>
+                                                        <div class="input-group-prepend">
+                                                            <button type="button" class="btn btn-info dropdown-toggle"
+                                                                    data-toggle="dropdown" aria-expanded="false">
+                                                                Action
+                                                            </button>
+                                                            <div class="dropdown-menu" x-placement="bottom-start"
+                                                                 style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                                                                <a type="button" class="dropdown-item">Edit</a>
+                                                                <a type="button" class="dropdown-item">Remove</a>
+                                                                <a type="button" class="dropdown-item">activate</a>
+                                                                <a type="button" class="dropdown-item">deactivate</a>
+                                                                <div class="dropdown-divider"></div>
+                                                                <a type="button" class="dropdown-item">contact</a>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>1.</td>
+                                                    <td>Update software</td>
+                                                    <td>
+                                                        2
+                                                    </td>
+                                                    <td><span class="badge bg-warning">23/01/2020</span></td>
+                                                    <td>
+                                                        <div class="input-group-prepend">
+                                                            <button type="button" class="btn btn-info dropdown-toggle"
+                                                                    data-toggle="dropdown" aria-expanded="false">
+                                                                Action
+                                                            </button>
+                                                            <div class="dropdown-menu" x-placement="bottom-start"
+                                                                 style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                                                                <a type="button" class="dropdown-item">Edit</a>
+                                                                <a type="button" class="dropdown-item">Remove</a>
+                                                                <a type="button" class="dropdown-item">activate</a>
+                                                                <a type="button" class="dropdown-item">deactivate</a>
+                                                                <div class="dropdown-divider"></div>
+                                                                <a type="button" class="dropdown-item">contact</a>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>1.</td>
+                                                    <td>Update software</td>
+                                                    <td>
+                                                        2
+                                                    </td>
+                                                    <td><span class="badge bg-warning">23/01/2020</span></td>
+                                                    <td>
+                                                        <div class="input-group-prepend">
+                                                            <button type="button" class="btn btn-info dropdown-toggle"
+                                                                    data-toggle="dropdown" aria-expanded="false">
+                                                                Action
+                                                            </button>
+                                                            <div class="dropdown-menu" x-placement="bottom-start"
+                                                                 style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                                                                <a type="button" class="dropdown-item">Edit</a>
+                                                                <a type="button" class="dropdown-item">Remove</a>
+                                                                <a type="button" class="dropdown-item">activate</a>
+                                                                <a type="button" class="dropdown-item">deactivate</a>
+                                                                <div class="dropdown-divider"></div>
+                                                                <a type="button" class="dropdown-item">contact</a>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>1.</td>
+                                                    <td>Update software</td>
+                                                    <td>
+                                                        2
+                                                    </td>
+                                                    <td><span class="badge bg-warning">23/01/2020</span></td>
+                                                    <td>
+                                                        <div class="input-group-prepend">
+                                                            <button type="button" class="btn btn-info dropdown-toggle"
+                                                                    data-toggle="dropdown" aria-expanded="false">
+                                                                Action
+                                                            </button>
+                                                            <div class="dropdown-menu" x-placement="bottom-start"
+                                                                 style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                                                                <a type="button" class="dropdown-item">Edit</a>
+                                                                <a type="button" class="dropdown-item">Remove</a>
+                                                                <a type="button" class="dropdown-item">activate</a>
+                                                                <a type="button" class="dropdown-item">deactivate</a>
+                                                                <div class="dropdown-divider"></div>
+                                                                <a type="button" class="dropdown-item">contact</a>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <!-- /.card-body -->
+                                        <div class="card-footer clearfix">
+
+                                            <div class="pagination pagination-sm m-0 float-left">
+                                                <button class="btn-sm btn-primary">add new attribute</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /.card -->
+                                    <!-- /.card -->
+                                </div>
+                                <!-- /.col -->
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="custom-content-below-Products" role="tabpanel"
+                             aria-labelledby="custom-content-below-settings-tab">
+                            <div class="row">
+
+                                <!-- /.col -->
+                                <div class="col-md-12">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h3 class="card-title">Products</h3>
+                                        </div>
+                                        <!-- /.card-header -->
+                                        <div class="card-body">
+                                            <table class="table table-bordered table-striped" id="ProductsDataTable">
+                                                <thead>
+                                                <tr>
+                                                    <th style="width: 10px">#</th>
+                                                    <th>title</th>
+                                                    <th>possible values number</th>
+                                                    <th style="width: 40px">date</th>
+                                                    <th style="width: 40px">action</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr>
+                                                    <td>1.</td>
+                                                    <td>Update software</td>
+                                                    <td>
+                                                        2
+                                                    </td>
+                                                    <td><span class="badge bg-warning">23/01/2020</span></td>
+                                                    <td>
+                                                        <div class="input-group-prepend">
+                                                            <button type="button" class="btn btn-info dropdown-toggle"
+                                                                    data-toggle="dropdown" aria-expanded="false">
+                                                                Action
+                                                            </button>
+                                                            <div class="dropdown-menu" x-placement="bottom-start"
+                                                                 style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                                                                <a type="button" class="dropdown-item">Edit</a>
+                                                                <a type="button" class="dropdown-item">Remove</a>
+                                                                <a type="button" class="dropdown-item">activate</a>
+                                                                <a type="button" class="dropdown-item">deactivate</a>
+                                                                <div class="dropdown-divider"></div>
+                                                                <a type="button" class="dropdown-item">contact</a>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>1.</td>
+                                                    <td>Update software</td>
+                                                    <td>
+                                                        2
+                                                    </td>
+                                                    <td><span class="badge bg-warning">23/01/2020</span></td>
+                                                    <td>
+                                                        <div class="input-group-prepend">
+                                                            <button type="button" class="btn btn-info dropdown-toggle"
+                                                                    data-toggle="dropdown" aria-expanded="false">
+                                                                Action
+                                                            </button>
+                                                            <div class="dropdown-menu" x-placement="bottom-start"
+                                                                 style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                                                                <a type="button" class="dropdown-item">Edit</a>
+                                                                <a type="button" class="dropdown-item">Remove</a>
+                                                                <a type="button" class="dropdown-item">activate</a>
+                                                                <a type="button" class="dropdown-item">deactivate</a>
+                                                                <div class="dropdown-divider"></div>
+                                                                <a type="button" class="dropdown-item">contact</a>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>1.</td>
+                                                    <td>Update software</td>
+                                                    <td>
+                                                        2
+                                                    </td>
+                                                    <td><span class="badge bg-warning">23/01/2020</span></td>
+                                                    <td>
+                                                        <div class="input-group-prepend">
+                                                            <button type="button" class="btn btn-info dropdown-toggle"
+                                                                    data-toggle="dropdown" aria-expanded="false">
+                                                                Action
+                                                            </button>
+                                                            <div class="dropdown-menu" x-placement="bottom-start"
+                                                                 style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                                                                <a type="button" class="dropdown-item">Edit</a>
+                                                                <a type="button" class="dropdown-item">Remove</a>
+                                                                <a type="button" class="dropdown-item">activate</a>
+                                                                <a type="button" class="dropdown-item">deactivate</a>
+                                                                <div class="dropdown-divider"></div>
+                                                                <a type="button" class="dropdown-item">contact</a>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>1.</td>
+                                                    <td>Update software</td>
+                                                    <td>
+                                                        2
+                                                    </td>
+                                                    <td><span class="badge bg-warning">23/01/2020</span></td>
+                                                    <td>
+                                                        <div class="input-group-prepend">
+                                                            <button type="button" class="btn btn-info dropdown-toggle"
+                                                                    data-toggle="dropdown" aria-expanded="false">
+                                                                Action
+                                                            </button>
+                                                            <div class="dropdown-menu" x-placement="bottom-start"
+                                                                 style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                                                                <a type="button" class="dropdown-item">Edit</a>
+                                                                <a type="button" class="dropdown-item">Remove</a>
+                                                                <a type="button" class="dropdown-item">activate</a>
+                                                                <a type="button" class="dropdown-item">deactivate</a>
+                                                                <div class="dropdown-divider"></div>
+                                                                <a type="button" class="dropdown-item">contact</a>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <!-- /.card-body -->
+                                        <div class="card-footer clearfix">
+                                            <div class="pagination pagination-sm m-0 float-left">
+                                                <button class="btn-sm btn-primary">add new product</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /.card -->
+                                    <!-- /.card -->
+                                </div>
+                                <!-- /.col -->
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /.card -->
+            </div>
+
+            <!-- modals section -->
+            <div class="modal fade" id="EditCenterModal" tabindex="-1" role="dialog" aria-labelledby="addCategoryCenterModalTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="EditCenterModalTitle"></h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-group">
+                                    <label for="categoryName" class="col-form-label">Category title:</label>
+
+                                    <input type="text" class="form-control" id="categoryName">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" >Close</button>
+                            <button type="button" class="btn btn-success" id="AddModalConfirmButton">Add</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- category remove modal -->
+            <div class="modal fade" id="RemoveModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="RemoveModalTitle">remove</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p id="RemoveModalCaution"></p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" >Close</button>
+                            <button type="button" class="btn btn-danger" id="RemoveModalConfirmButton">remove</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+    <footer class="main-footer">
+        <div class="float-right d-none d-sm-block">
+            <b>Version</b> 3.0.2
+        </div>
+        <strong>Copyright &copy; 2014-2019 <a href="http://adminlte.io">AdminLTE.io</a>.</strong> All rights
+        reserved.
+    </footer>
+
+    <!-- Control Sidebar -->
+    <aside class="control-sidebar control-sidebar-dark">
+        <!-- Control sidebar content goes here -->
+    </aside>
+    <!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
+
+<!-- jQuery -->
+<script src="../../plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- DataTables -->
+<script src="../../plugins/datatables/jquery.dataTables.js"></script>
+<script src="../../plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>
+<!-- AdminLTE App -->
+<script src="../../dist/js/adminlte.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="../../dist/js/demo.js"></script>
+<script src="../../plugins/sweetalert2/sweetalert2.min.js"></script>
+<!-- Toastr -->
+
+
+<script src="/javascripts/ProductsPanelScript.js"></script>
+<!-- page script -->
+<script>
+    $(function () {
+        // $("#example1").DataTable();
+        $('#MainCategoriesDataTable').DataTable({
+            "paging": true,
+            "lengthChange": true,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": true,
+        });
+        $('#FirstLevelSubCategoriesDataTable').DataTable({
+            "paging": true,
+            "lengthChange": true,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": true,
+        });
+        $('#SeconLevelSubCategoriesDataTable').DataTable({
+            "paging": true,
+            "lengthChange": true,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": true,
+        });
+        $('#AttributesDataTable').DataTable({
+            "paging": true,
+            "lengthChange": true,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": true,
+        });
+        $('#ProductsDataTable').DataTable({
+            "paging": true,
+            "lengthChange": true,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": true,
+        });
+    });
+</script>
+</body>
+</html>
